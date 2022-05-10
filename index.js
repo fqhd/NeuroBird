@@ -4,6 +4,8 @@ const WIDTH = 800;
 const HEIGHT = 600;
 const GAP_HEIGHT = 100;
 const PIPE_WIDTH = 60;
+const GRAVITY = 0.0005;
+const bird = new Bird(100);
 
 function setup(){
     createCanvas(WIDTH, HEIGHT);
@@ -16,6 +18,15 @@ function draw(){
 
     updatePipes();
     drawPipes();
+    bird.update();
+    bird.draw();
+
+}
+
+function keyPressed(e){
+    if(e.key == ' '){
+        bird.up();
+    }
 }
 
 function updatePipes(){
