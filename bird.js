@@ -38,7 +38,6 @@ class Bird {
         }
         inputs.push((closest.y - GAP_HEIGHT) / (HEIGHT - GAP_HEIGHT));
         const outputs = this.brain.predict(inputs);
-        console.log(inputs);
 
         if(outputs[0] > 0.5){
             this.up();
@@ -46,6 +45,7 @@ class Bird {
     }
 
     draw(){
+        fill(255, 50);
         circle(this.x, this.y, 30);
     }
 

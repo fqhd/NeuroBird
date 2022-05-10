@@ -1,16 +1,18 @@
 const pipes = [];
+const birds = [];
 const NUM_PIPES = 3;
 const WIDTH = 800;
 const HEIGHT = 600;
 const GAP_HEIGHT = 100;
 const PIPE_WIDTH = 60;
 const GRAVITY = 0.0005;
-const bird = new Bird(100);
 const STEP = (WIDTH + PIPE_WIDTH) / NUM_PIPES;
+const TOTAL = 300;
 
 function setup(){
     createCanvas(WIDTH, HEIGHT);
     createPipes();
+    createPopulation();
 }
 
 function draw(){
@@ -19,14 +21,20 @@ function draw(){
 
     updatePipes();
     drawPipes();
-    bird.update(pipes);
-    bird.draw();
+    updateBirds();
+    drawBirds();
 }
 
-function keyPressed(e){
-    if(e.key == ' '){
-        bird.up();
-    }
+function updateBirds(){
+    birds.forEach(b => {
+        b.update(pipes);
+    });
+}
+
+function drawBirds(){
+    birds.forEach(b => {
+        b.draw();
+    });
 }
 
 function updatePipes(){
@@ -67,4 +75,11 @@ function createPipePair(offset){
 
     pipes.push(p1);
     pipes.push(p2);
+}
+
+function createPopulation(){
+    for(let i = 0; i < TOTAL; i++){
+        const bird = new Bird(100);
+        birds.push(bird);
+    }
 }

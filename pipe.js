@@ -16,6 +16,7 @@ class Pipe{
     }
 
     draw(){
+        fill(255);
         rect(this.x, this.y, this.width, this.height);
     }
 }
