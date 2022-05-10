@@ -41,7 +41,7 @@ function drawPipes(){
 }
 
 function createPipes(){
-    const step = WIDTH / NUM_PIPES;
+    const step = (WIDTH + PIPE_WIDTH) / NUM_PIPES;
     let currentOffset = WIDTH;
     for(let i = 0; i < NUM_PIPES; i++){
         createPipePair(currentOffset);
