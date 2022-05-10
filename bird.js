@@ -4,7 +4,7 @@ class Bird {
         this.x = x;
         this.velocity = 0;
         this.y = HEIGHT / 2;
-        this.brain = new NeuralNetwork(4, 4, 1);
+        this.brain = new NeuralNetwork(3, 4, 1);
     }
 
     update(pipes){
@@ -29,8 +29,16 @@ class Bird {
                 closestD = distance;
             }
         });
-        const inputs = [this.x, this.y, closest.x, closest.height];
+        
+        const inputs = [];
+        inputs.push(this.y / HEIGHT);
+        inputs.push((closest.x - this.x) / STEP);
+        if(inputs[1] > 1){
+            inputs[1] = 1;
+        }
+        inputs.push((closest.y - GAP_HEIGHT) / (HEIGHT - GAP_HEIGHT));
         const outputs = this.brain.predict(inputs);
+        console.log(inputs);
 
         if(outputs[0] > 0.5){
             this.up();
