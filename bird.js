@@ -1,23 +1,24 @@
 class Bird {
 
-    constructor(x){
-        this.x = x;
+    constructor(brain){
+        this.x = BIRD_POS;
         this.velocity = 0;
         this.y = HEIGHT / 2;
-        this.brain = new NeuralNetwork(3, 4, 1);
+        if(brain){
+            this.brain = brain;
+        }else{
+            this.brain = new NeuralNetwork(3, 4, 1);
+        }
+        this.score = 0;
+        this.fitness = 0;
     }
 
     update(pipes){
+        this.score++;
         this.velocity += GRAVITY * deltaTime;
         this.y += this.velocity * deltaTime;
         if(this.velocity > 1){
             this.velocity = 1;
-        }
-        if(this.y > HEIGHT){
-            this.y = HEIGHT;
-        }
-        if(this.y < 0){
-            this.y = 0;
         }
 
         let closest = null;
@@ -45,8 +46,8 @@ class Bird {
     }
 
     draw(){
-        fill(255, 50);
-        circle(this.x, this.y, 30);
+        fill(255, 100);
+        circle(this.x, this.y, BIRD_SIZE);
     }
 
     up(){
