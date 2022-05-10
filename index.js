@@ -18,16 +18,16 @@ function draw(){
 
     updatePipes();
     drawPipes();
-    bird.update();
+    bird.update(pipes);
     bird.draw();
 
 }
 
-function keyPressed(e){
-    if(e.key == ' '){
-        bird.up();
-    }
-}
+// function keyPressed(e){
+//     if(e.key == ' '){
+//         bird.up();
+//     }
+// }
 
 function updatePipes(){
     pipes.forEach(p => {
