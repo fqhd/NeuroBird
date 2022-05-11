@@ -19,9 +19,7 @@ function nextGeneration() {
 	calculateFitness();
 
 	savedBirds.sort(comp);
-	console.log(bestBird.score);
 	if (savedBirds[savedBirds.length - 1].score > bestBird.score) {
-		console.log('update best');
 		bestBird.brain = savedBirds[savedBirds.length - 1].brain.copy();
 		bestBird.score = savedBirds[savedBirds.length - 1].score;
 	}
