@@ -19,6 +19,12 @@ function nextGeneration() {
 	calculateFitness();
 
 	savedBirds.sort(comp);
+	console.log(bestBird.score);
+	if (savedBirds[savedBirds.length - 1].score > bestBird.score) {
+		console.log('update best');
+		bestBird.brain = savedBirds[savedBirds.length - 1].brain.copy();
+		bestBird.score = savedBirds[savedBirds.length - 1].score;
+	}
 
 	for (let i = 0; i < TOTAL; i++) {
 		const chosenBrain = pickOne();
@@ -50,6 +56,5 @@ function calculateFitness() {
 
 	savedBirds.forEach((b) => {
 		b.fitness = Math.pow(b.score, 4) / sum;
-		b.score = 0;
 	});
 }

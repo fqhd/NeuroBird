@@ -18,8 +18,13 @@ const BIRD_SIZE = 40;
 const BIRD_POS = 100;
 let slider;
 let assets;
-let userPlaying;
+let state = 1;
 let userBird = new Bird(false);
+let bestBird = new Bird(true);
+
+// 0 user
+// 1 training
+// 2 best
 
 function preload() {
 	assets = {
@@ -38,8 +43,13 @@ function preload() {
 }
 
 function setup() {
-	userPlaying = createCheckbox("User Playing");
-	userPlaying.changed(resetSimulation);
+	let t = createButton('Training');
+	let y = createButton('Try For Yourself');
+	let b = createButton('Best Bird So Far');
+	t.mousePressed(train);
+	y.mousePressed(yourself);
+	b.mousePressed(best);
+
 	createClouds();
 	createCanvas(WIDTH, HEIGHT);
 	createPipes();
@@ -47,8 +57,23 @@ function setup() {
 	slider = createSlider(1, 100, 1);
 }
 
+function train(){
+	hardResetSimulation();
+	state = 1;
+}
+
+function yourself(){
+	hardResetSimulation();
+	state = 0;
+}
+
+function best(){
+	hardResetSimulation();
+	state = 2;
+}
+
 function updateScore() {
-	if (userPlaying.checked()) {
+	if (state == 0) {
 		for (let i = 0; i < pipes.length; i += 2) {
 			if (pipes[i].x < userBird.x && !pipes[i].passed) {
 				pipes[i].passed = true;
@@ -56,7 +81,7 @@ function updateScore() {
 				return;
 			}
 		}
-	} else {
+	} else if(state == 1){
 		for (let i = 0; i < pipes.length; i += 2) {
 			for (let j = 0; j < birds.length; j++) {
 				if (pipes[i].x < birds[j].x && !pipes[i].passed) {
@@ -64,6 +89,14 @@ function updateScore() {
 					score++;
 					return;
 				}
+			}
+		}
+	}else{
+		for (let i = 0; i < pipes.length; i += 2) {
+			if (pipes[i].x < bestBird.x && !pipes[i].passed) {
+				pipes[i].passed = true;
+				score++;
+				return;
 			}
 		}
 	}
@@ -85,7 +118,7 @@ function draw() {
 		updateClouds();
 		updatePipes();
 		drawPipes();
-		if (!userPlaying.checked()) {
+		if (state == 1) {
 			updateBirds();
 			drawBirds();
 
@@ -93,7 +126,7 @@ function draw() {
 				nextGeneration();
 				resetSimulation();
 			}
-		} else {
+		} else if(state == 0){
 			userBird.update();
 			userBird.draw(assets);
 			pipes.forEach((pipe) => {
@@ -102,6 +135,17 @@ function draw() {
 				}
 			});
 			if (userBird.y > HEIGHT || userBird.y < 0) {
+				resetSimulation();
+			}
+		}else{
+			bestBird.update(pipes);
+			bestBird.draw(assets);
+			pipes.forEach((pipe) => {
+				if (pipe.hit(bestBird)) {
+					resetSimulation();
+				}
+			});
+			if (bestBird.y > HEIGHT || bestBird.y < 0) {
 				resetSimulation();
 			}
 		}
@@ -128,6 +172,9 @@ function resetSimulation() {
 	userBird = new Bird(false);
 	savedBirds = [];
 	score = 0;
+	bestBird.x = BIRD_POS;
+	bestBird.y = HEIGHT / 2;
+	bestBird.velocity = 0;
 }
 
 function createClouds() {
