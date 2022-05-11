@@ -49,12 +49,18 @@ class Bird {
 		}
 	}
 
-	draw() {
+	draw(assets) {
 		fill(255, 100);
-		circle(this.x, this.y, BIRD_SIZE);
+		if(this.velocity > 0){
+			image(assets.bird.up, this.x - BIRD_SIZE / 2, this.y - BIRD_SIZE / 2, BIRD_SIZE, BIRD_SIZE);
+		}else{
+			image(assets.bird.down, this.x - BIRD_SIZE / 2, this.y - BIRD_SIZE / 2, BIRD_SIZE, BIRD_SIZE);
+		}
 	}
 
 	up() {
-		this.velocity = -0.2;
+		if(this.velocity > 0){
+			this.velocity = -0.3;
+		}
 	}
 }
