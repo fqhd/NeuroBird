@@ -2,6 +2,7 @@ let pipes = [];
 let birds = [];
 let savedBirds = [];
 let clouds = [];
+let score = 0;
 const CLOUD_WIDTH = 100;
 const CLOUD_HEIGHT = 50;
 const NUM_CLOUDS = 10;
@@ -46,6 +47,35 @@ function setup() {
 	slider = createSlider(1, 100, 1);
 }
 
+function updateScore() {
+	if (userPlaying.checked()) {
+		for (let i = 0; i < pipes.length; i += 2) {
+			if (pipes[i].x < userBird.x && !pipes[i].passed) {
+				pipes[i].passed = true;
+				score++;
+				return;
+			}
+		}
+	} else {
+		for (let i = 0; i < pipes.length; i += 2) {
+			for (let j = 0; j < birds.length; j++) {
+				if (pipes[i].x < birds[j].x && !pipes[i].passed) {
+					pipes[i].passed = true;
+					score++;
+					return;
+				}
+			}
+		}
+	}
+}
+
+function showScore() {
+	textSize(100);
+	textAlign(CENTER);
+	fill(0);
+	text(score, WIDTH/2, 100);
+}
+
 function draw() {
 	for (let i = 0; i < slider.value(); i++) {
 		clear();
@@ -55,14 +85,12 @@ function draw() {
 		updateClouds();
 		updatePipes();
 		drawPipes();
-		console.log(userPlaying.checked());
 		if (!userPlaying.checked()) {
 			updateBirds();
 			drawBirds();
 
 			if (birds.length == 0) {
 				nextGeneration();
-				console.log("next Generation");
 				resetSimulation();
 			}
 		} else {
@@ -77,7 +105,15 @@ function draw() {
 				resetSimulation();
 			}
 		}
+		updateScore();
+		showScore();
 	}
+}
+
+function hardResetSimulation() {
+	resetSimulation();
+	birds = [];
+	createPopulation();
 }
 
 function keyPressed() {
@@ -90,9 +126,8 @@ function resetSimulation() {
 	pipes = [];
 	createPipes();
 	userBird = new Bird(false);
-	birds = [];
-	createPopulation();
 	savedBirds = [];
+	score = 0;
 }
 
 function createClouds() {

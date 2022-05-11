@@ -21,9 +21,9 @@ function nextGeneration() {
 	savedBirds.sort(comp);
 
 	for (let i = 0; i < TOTAL; i++) {
-		const chosenBird = pickOne();
-		chosenBird.brain.mutate(mutate);
-		birds.push(new Bird(chosenBird.brain.copy()));
+		const chosenBrain = pickOne();
+		chosenBrain.mutate(mutate);
+		birds.push(new Bird(true, chosenBrain.copy()));
 	}
 
 	savedBirds = [];
@@ -38,7 +38,7 @@ function pickOne() {
 	}
 	index--;
 	let bird = savedBirds[index];
-	let child = new Bird(bird.brain);
+	let child = bird.brain;
 	return child;
 }
 
