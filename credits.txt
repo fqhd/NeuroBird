@@ -1,0 +1,5 @@
+Pipe: https://opengameart.org/content/2d-object-pack
+Cloud: https://opengameart.org/content/cloud-2
+Bird: https://opengameart.org/content/bevouliin-free-bee-flappy-bird-sprite-sheets
+
+Huge thanks to Daniel Shiffman(The Coding Train) for inspiring this project.
