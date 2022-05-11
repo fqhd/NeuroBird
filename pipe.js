@@ -26,7 +26,7 @@ class Pipe{
     }
 
     update(){
-        this.x -= deltaTime * 0.1;
+        this.x -= deltaTime * 0.2;
     }
 
     draw(){

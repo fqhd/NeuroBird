@@ -1,10 +1,10 @@
 let pipes = [];
 const birds = [];
 let savedBirds = [];
-const NUM_PIPES = 3;
+const NUM_PIPES = 2;
 const WIDTH = 800;
 const HEIGHT = 600;
-const GAP_HEIGHT = 100;
+const GAP_HEIGHT = 150;
 const PIPE_WIDTH = 60;
 const GRAVITY = 0.0005;
 const STEP = (WIDTH + PIPE_WIDTH) / NUM_PIPES;
@@ -32,6 +32,7 @@ function draw(){
     
         if(birds.length == 0){
             nextGeneration();
+			console.log('next Generation');
             resetSimulation();
         }
     }
