@@ -1,5 +1,5 @@
 let pipes = [];
-const birds = [];
+let birds = [];
 let savedBirds = [];
 let clouds = [];
 const CLOUD_WIDTH = 100;
@@ -17,6 +17,8 @@ const BIRD_SIZE = 40;
 const BIRD_POS = 100;
 let slider;
 let assets;
+let userPlaying;
+let userBird = new Bird(false);
 
 function preload() {
 	assets = {
@@ -35,6 +37,8 @@ function preload() {
 }
 
 function setup() {
+	userPlaying = createCheckbox("User Playing");
+	userPlaying.changed(resetSimulation);
 	createClouds();
 	createCanvas(WIDTH, HEIGHT);
 	createPipes();
@@ -51,20 +55,44 @@ function draw() {
 		updateClouds();
 		updatePipes();
 		drawPipes();
-		updateBirds();
-		drawBirds();
+		console.log(userPlaying.checked());
+		if (!userPlaying.checked()) {
+			updateBirds();
+			drawBirds();
 
-		if (birds.length == 0) {
-			nextGeneration();
-			console.log("next Generation");
-			resetSimulation();
+			if (birds.length == 0) {
+				nextGeneration();
+				console.log("next Generation");
+				resetSimulation();
+			}
+		} else {
+			userBird.update();
+			userBird.draw(assets);
+			pipes.forEach((pipe) => {
+				if (pipe.hit(userBird)) {
+					resetSimulation();
+				}
+			});
+			if (userBird.y > HEIGHT || userBird.y < 0) {
+				resetSimulation();
+			}
 		}
+	}
+}
+
+function keyPressed() {
+	if (key == " ") {
+		userBird.up();
 	}
 }
 
 function resetSimulation() {
 	pipes = [];
 	createPipes();
+	userBird = new Bird(false);
+	birds = [];
+	createPopulation();
+	savedBirds = [];
 }
 
 function createClouds() {
@@ -176,7 +204,7 @@ function createPipePair(offset) {
 
 function createPopulation() {
 	for (let i = 0; i < TOTAL; i++) {
-		const bird = new Bird();
+		const bird = new Bird(true);
 		birds.push(bird);
 	}
 }
