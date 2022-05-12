@@ -73,7 +73,7 @@ class Bird {
 	}
 
 	up() {
-		if (this.velocity > 0) {
+		if (this.velocity > -0.1) {
 			this.velocity = -0.3;
 		}
 	}
